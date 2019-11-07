@@ -23,4 +23,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM movie ORDER BY id ASC")
     fun getMoviesDataSource(): DataSource.Factory<Int, Movie>
+
+    @Query("SELECT COUNT(*) FROM movie")
+    fun getCount(): Int
 }

@@ -6,24 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    
+
 
     <Button
-        android:id="@+id/withDB"
+        android:id="@+id/withListAdapter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/with_database"
-        app:layout_constraintBottom_toTopOf="@+id/withNetwork"
+        android:onClick="launchForListAdapter"
+        android:text="@string/list_adapter"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/withDB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/withDB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="pagingWithDB"
+        android:text="@string/with_database"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/withNetwork"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/withListAdapter" />
+
+    <Button
         android:id="@+id/withNetwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="pagingWithNetwork"
         android:text="@string/with_network"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/databaseAndNetwork"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -34,7 +51,9 @@
         android:id="@+id/databaseAndNetwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/with_network"
+        android:onClick="pagingWithDataBase"
+        android:text="@string/database_network"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -46,4 +46,7 @@ dependencies {
     implementation deps.retrofit.gson
     implementation deps.okhttp_logging_interceptor
     implementation deps.glide.runtime
+
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+
 }

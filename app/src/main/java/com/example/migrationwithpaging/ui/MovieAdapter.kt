@@ -35,11 +35,15 @@ class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(DIFF) {
         private val popularity: TextView = view.findViewById(R.id.popularity)
 
         fun bind(movie: Movie?) {
-            Glide.with(posterImageView.context).load(movie?.posterPath).into(posterImageView)
+            Glide.with(posterImageView.context).load(movie?.posterPath?.let { getPoster(it) })
+                .into(posterImageView)
             title.text = movie?.title
-            popularity.text = movie?.id
+            popularity.text = movie?.popularity.toString()
 
         }
+
+        private fun getPoster(posterPath: String) =
+            "https://image.tmdb.org/t/p/w342$posterPath"
     }
 
 

@@ -2,5 +2,7 @@
     <string name="app_name">MigrationWithPaging</string>
     <string name="with_database">With DataBase</string>
     <string name="with_network">With Network</string>
-    <string name="title_activity_with_db">WithDBActivity</string>
+    <string name="title_activity_with_db">Movies</string>
+    <string name="list_adapter">List Adapter</string>
+    <string name="database_network">Database + Network</string>
 </resources>

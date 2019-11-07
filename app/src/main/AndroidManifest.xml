@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".MovieApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.migrationwithpaging.ui.withDB.WithDBActivity"
+            android:name="com.example.migrationwithpaging.ui.MovieActivity"
             android:label="@string/title_activity_with_db"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity">
