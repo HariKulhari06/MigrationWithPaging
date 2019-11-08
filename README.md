@@ -49,7 +49,7 @@ Feel free to report or add any useful feature, I will be glad to improve it with
 Developed By
 ------------
 
-* Erik Jhordan Rey  - <hari.kulhari@ranosys.com> 
+* Hari Singh Kulhari  - <hari.kulhari@ranosys.com> 
 
 License
 -------
