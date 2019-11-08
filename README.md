@@ -2,7 +2,11 @@
 
 Sample created to practice **Paging Library**.
 
-![](https://github.com/HariKulhari06/MigrationWithPaging/blob/master/art/screen.png?raw=true)
+<p align="center">
+	<a href="./LICENSE">
+		<img src="https://github.com/HariKulhari06/MigrationWithPaging/blob/master/art/screen.png?raw=true" />
+	</a>
+</p>
 
 ## What Have I learned?
 
