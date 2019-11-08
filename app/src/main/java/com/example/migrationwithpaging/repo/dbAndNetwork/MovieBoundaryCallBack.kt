@@ -6,17 +6,17 @@ import com.example.migrationwithpaging.data.Movie
 import com.example.migrationwithpaging.data.MovieDao
 import com.example.migrationwithpaging.data.network.*
 import com.example.migrationwithpaging.repo.NetworkState
+import com.example.migrationwithpaging.repo.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlin.reflect.KFunction1
 
-class MovieBoundryCallBack(
+class MovieBoundaryCallBack(
     private val movieDao: MovieDao,
     private val webservice: ApiService,
     private val handleResponse: KFunction1<@ParameterName(name = "movies") List<Movie>, Unit>
 ) : PagedList.BoundaryCallback<Movie>() {
 
-    var isLoading = false
     val networkState = MutableLiveData<NetworkState>()
 
     override fun onZeroItemsLoaded() {
@@ -25,7 +25,7 @@ class MovieBoundryCallBack(
 
     private fun getPageNumber() = runBlocking(Dispatchers.IO) {
         val movieCount = movieDao.getCount()
-        movieCount / 20 + 1
+        movieCount / 15 + 1
     }
 
 
@@ -38,24 +38,21 @@ class MovieBoundryCallBack(
     }
 
     private fun callMovieWebService(i: Int) {
-        if (isLoading) return
-        isLoading = true
+        if (networkState.value?.status == Status.RUNNING)
+            return
         networkState.postValue(NetworkState.LOADING)
         ApiRepository.callApi(webservice.discoverMovieAsync(i),
             object : ApiCallback<DiscoverMoviesResponse> {
                 override fun onException(error: Throwable) {
                     networkState.postValue(NetworkState.error(error.message))
-                    isLoading = false
                 }
 
                 override fun onError(errorModel: ApiError) {
                     networkState.postValue(NetworkState.error(errorModel.statusMessage))
-                    isLoading = false
                 }
 
                 override fun onSuccess(t: DiscoverMoviesResponse?) {
                     networkState.postValue(NetworkState.LOADED)
-                    isLoading = false
                     t?.movies?.let { handleResponse.invoke(it) }
                 }
             })

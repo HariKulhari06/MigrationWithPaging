@@ -3,6 +3,7 @@ package com.example.migrationwithpaging.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -48,20 +49,23 @@ class MovieActivity : AppCompatActivity() {
         when (pagingType) {
             PagingType.LIST_ADAPTER -> {
                 viewModel.moviesLiveData.observe(this, Observer {
+                    Log.e("moviesLiveData", "" + it.size)
                     //adapter.submitList(it)
                 })
-                viewModel.insertTestMovies()
             }
             PagingType.WITH_DB -> viewModel.moviesLiveListFromDataBase.observe(this, Observer {
+                Log.e("FromDataBase", "" + it.size)
                 adapter.submitList(it)
             })
             PagingType.WITH_NETWORK -> viewModel.moviesLiveListFromNetwork.observe(this, Observer {
+                Log.e("FromNetwork", "" + it.size)
                 adapter.submitList(it)
             })
             else -> {
-               viewModel.moviesLiveListFromDataBaseAndNetwork.observe(this, Observer {
-                   adapter.submitList(it)
-               })
+                viewModel.moviesLiveListFromDataBaseAndNetwork.observe(this, Observer {
+                    Log.e("DataBaseAndNetwork", "" + it.size)
+                    adapter.submitList(it)
+                })
             }
         }
 

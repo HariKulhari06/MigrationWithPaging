@@ -1,13 +1,14 @@
-package com.example.migrationwithpaging.repo.withNetwork
+package com.example.migrationwithpaging.repo.withNetwork.byposition
 
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
+import androidx.paging.PositionalDataSource
 import com.example.migrationwithpaging.data.Movie
 import com.example.migrationwithpaging.data.network.*
 import com.example.migrationwithpaging.repo.NetworkState
 
-class MoviePagedKeyDataSource(private val apiService: ApiService) :
-    PageKeyedDataSource<Int, Movie>() {
+class MoviePositionalDataSource(private val apiService: ApiService) :
+    PositionalDataSource<Movie>() {
+
     val networkState = MutableLiveData<NetworkState>()
 
     private var retry: (() -> Any)? = null
@@ -22,10 +23,7 @@ class MoviePagedKeyDataSource(private val apiService: ApiService) :
         }
     }
 
-    override fun loadInitial(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Movie>
-    ) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Movie>) {
         networkState.postValue(NetworkState.LOADING)
         ApiRepository.callApi(
             apiService.discoverMovieAsync(1),
@@ -51,19 +49,18 @@ class MoviePagedKeyDataSource(private val apiService: ApiService) :
 
                 override fun onSuccess(t: DiscoverMoviesResponse?) {
                     if (t != null) {
-                        callback.onResult(t.movies, null, 2)
+                        callback.onResult(t.movies, 0, t.totalResults)
                         networkState.postValue(NetworkState.LOADED)
                         retry = null
                     }
                 }
             })
-
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Movie>) {
         networkState.postValue(NetworkState.LOADING)
         ApiRepository.callApi(
-            apiService.discoverMovieAsync(params.key),
+            apiService.discoverMovieAsync(params.startPosition.div(params.loadSize).plus(1)),
             object : ApiCallback<DiscoverMoviesResponse> {
                 override fun onException(error: Throwable) {
                     networkState.postValue(
@@ -72,7 +69,7 @@ class MoviePagedKeyDataSource(private val apiService: ApiService) :
                         )
                     )
                     retry = {
-                        loadAfter(params, callback)
+                        loadRange(params, callback)
                     }
                 }
 
@@ -83,21 +80,17 @@ class MoviePagedKeyDataSource(private val apiService: ApiService) :
                         )
                     )
                     retry = {
-                        loadAfter(params, callback)
+                        loadRange(params, callback)
                     }
                 }
 
                 override fun onSuccess(t: DiscoverMoviesResponse?) {
                     if (t != null) {
-                        callback.onResult(t.movies, params.key.plus(1))
+                        callback.onResult(t.movies)
                         networkState.postValue(NetworkState.LOADED)
                         retry = null
                     }
                 }
             })
-    }
-
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-        //EMPTY
     }
 }

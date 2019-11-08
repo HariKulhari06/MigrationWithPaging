@@ -12,10 +12,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
-        withDB.setOnClickListener {
-            startActivity(Intent(this, MovieActivity::class.java))
-        }
     }
 
     fun launchForListAdapter(view: View) {

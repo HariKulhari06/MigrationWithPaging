@@ -8,8 +8,8 @@ import androidx.paging.toLiveData
 import com.example.migrationwithpaging.data.Movie
 import com.example.migrationwithpaging.data.MovieDao
 import com.example.migrationwithpaging.data.network.ApiService
-import com.example.migrationwithpaging.repo.dbAndNetwork.MovieBoundryCallBack
-import com.example.migrationwithpaging.repo.withNetwork.MovieDataSourceFactory
+import com.example.migrationwithpaging.repo.dbAndNetwork.MovieBoundaryCallBack
+import com.example.migrationwithpaging.repo.withNetwork.byposition.MoviePositionalDataSourceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,10 +31,9 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
     }
 
     fun getListingFromNetwork(): Listing<Movie> {
-        val dataSourceFactory =
-            MovieDataSourceFactory(apiService)
+        val dataSourceFactory = MoviePositionalDataSourceFactory(apiService)
 
-        val pagedList = dataSourceFactory.toLiveData(20)
+        val pagedList = dataSourceFactory.toLiveData(20, initialLoadKey = 1)
 
         val refreshState = Transformations.switchMap(dataSourceFactory.sourceData) {
             it.initialLoad
@@ -57,7 +56,7 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
 
 
     fun getListingFromDataBase(): Listing<Movie> {
-        val boundaryCallback = MovieBoundryCallBack(
+        val boundaryCallback = MovieBoundaryCallBack(
             movieDao = movieDao,
             webservice = apiService,
             handleResponse = this::insertIntoDatabase
@@ -69,7 +68,7 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
         }
 
         val pagedList = movieDao.getMoviesDataSource().toLiveData(
-            20,
+            15,
             boundaryCallback = boundaryCallback
         )
 
@@ -116,6 +115,15 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
             }
             insertIntoDatabase(list)
         }
+    }
+
+    companion object {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPrefetchDistance(15)
+            .setInitialLoadSizeHint(10)
+            .setPageSize(5)
+            .build()
     }
 
 }
