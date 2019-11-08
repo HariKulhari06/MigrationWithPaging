@@ -2,7 +2,7 @@
 
 Sample created to practice **Paging Library**.
 
-![](.art/screen.png)
+![](https://github.com/HariKulhari06/MigrationWithPaging/blob/master/art/screen.png?raw=true)
 
 ## What Have I learned?
 
