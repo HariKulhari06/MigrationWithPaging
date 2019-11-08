@@ -20,7 +20,7 @@ abstract class AppDataBase : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         AppDataBase::class.java, "ranosys.db"
-                    ).createFromAsset("ranosys.db").build()
+                    )/*.createFromAsset("ranosys.db")*/.build()
                 }
             }
             return INSTANCE

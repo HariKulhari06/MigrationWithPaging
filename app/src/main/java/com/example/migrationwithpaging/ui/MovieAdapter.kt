@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.migrationwithpaging.R
 import com.example.migrationwithpaging.data.Movie
 
-class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(DIFF) {
+class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -25,20 +25,22 @@ class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(DIFF) {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        if (item != null)
+            holder.bind(item)
     }
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val posterImageView: ImageView = view.findViewById(R.id.poster)
         private val title: TextView = view.findViewById(R.id.title)
-        private val popularity: TextView = view.findViewById(R.id.popularity)
+        private val overview: TextView = view.findViewById(R.id.overview)
 
         fun bind(movie: Movie?) {
             Glide.with(posterImageView.context).load(movie?.posterPath?.let { getPoster(it) })
                 .into(posterImageView)
             title.text = movie?.title
-            popularity.text = movie?.popularity.toString()
+            overview.text = movie?.overview.toString()
 
         }
 
@@ -48,13 +50,12 @@ class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(DIFF) {
 
 
     companion object {
-        val DIFF = object : DiffUtil.ItemCallback<Movie>() {
+        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+                oldItem.localId == newItem.localId
+
             override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
                 oldItem == newItem
-
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.title == newItem.title
-
         }
     }
 }

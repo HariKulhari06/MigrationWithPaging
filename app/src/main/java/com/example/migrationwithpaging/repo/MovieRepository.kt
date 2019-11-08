@@ -9,7 +9,7 @@ import com.example.migrationwithpaging.data.Movie
 import com.example.migrationwithpaging.data.MovieDao
 import com.example.migrationwithpaging.data.network.ApiService
 import com.example.migrationwithpaging.repo.dbAndNetwork.MovieBoundaryCallBack
-import com.example.migrationwithpaging.repo.withNetwork.byposition.MoviePositionalDataSourceFactory
+import com.example.migrationwithpaging.repo.withNetwork.byItem.MoviePagedKeyDataSourceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,9 +31,9 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
     }
 
     fun getListingFromNetwork(): Listing<Movie> {
-        val dataSourceFactory = MoviePositionalDataSourceFactory(apiService)
+        val dataSourceFactory = MoviePagedKeyDataSourceFactory(apiService)
 
-        val pagedList = dataSourceFactory.toLiveData(20, initialLoadKey = 1)
+        val pagedList = dataSourceFactory.toLiveData(5)
 
         val refreshState = Transformations.switchMap(dataSourceFactory.sourceData) {
             it.initialLoad
@@ -68,7 +68,7 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
         }
 
         val pagedList = movieDao.getMoviesDataSource().toLiveData(
-            15,
+            config,
             boundaryCallback = boundaryCallback
         )
 
@@ -87,9 +87,7 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
     }
 
     private fun refresh(): MutableLiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
-
-        return networkState
+        return MutableLiveData()
     }
 
 
@@ -107,9 +105,11 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
                 list.add(
                     Movie(
                         i,
+                        i,
                         i.toDouble(),
                         "Movie Title $i",
                         "/989zACwuc4EiBUNA3Ul7bgMoh0O.jpg"
+                        , ""
                     )
                 )
             }
@@ -120,9 +120,7 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
     companion object {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setPrefetchDistance(15)
-            .setInitialLoadSizeHint(10)
-            .setPageSize(5)
+            .setPageSize(20)
             .build()
     }
 

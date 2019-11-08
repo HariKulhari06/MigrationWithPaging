@@ -25,7 +25,7 @@ class MovieBoundaryCallBack(
 
     private fun getPageNumber() = runBlocking(Dispatchers.IO) {
         val movieCount = movieDao.getCount()
-        movieCount / 15 + 1
+        movieCount / 60 + 1
     }
 
 
