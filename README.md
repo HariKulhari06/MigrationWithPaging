@@ -2,7 +2,7 @@
 
 Sample created to practice **Paging Library**.
 
-![](.art/screen.jpg)
+![](.art/screen.png)
 
 ## What Have I learned?
 
