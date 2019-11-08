@@ -2,7 +2,7 @@
 
 Sample created to practice **Paging Library**.
 
-[](/home/ranosys/AndroidStudioProjects/MigrationWithPaging/app/art/device-2019-11-08-161210.png)
+![](.art/screen.jpg)
 
 ## What Have I learned?
 
