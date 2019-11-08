@@ -2,6 +2,8 @@
 
 Sample created to practice **Paging Library**.
 
+[](/home/ranosys/AndroidStudioProjects/MigrationWithPaging/app/art/device-2019-11-08-161210.png)
+
 ## What Have I learned?
 
 * **Paging Library:** The Paging Library makes it easier for you to load data on demand within your app's RecyclerView.
@@ -17,8 +19,6 @@ Sample created to practice **Paging Library**.
 * **PositionalDataSource:** if you need to fetch pages of data from any location you choose.
 
 * **LivePagedListBuilder:** Class used to build a LiveData<PagedList> based on DataSource.Factory and a PagedList.Config.
-
-* **RxPagedListBuilder:** Class used to build a Observable<PagedList> based on DataSource.Factory and a PagedList.Config.
 
 * **BoundaryCallback:** Helper callback to signals when a PagedList has reached the end of available data.
 
