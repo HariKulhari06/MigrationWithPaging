@@ -97,31 +97,10 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
         }
     }
 
-
-    fun insertDemoData() {
-        GlobalScope.launch(Dispatchers.IO) {
-            val list = ArrayList<Movie>()
-            for (i in 1..100000) {
-                list.add(
-                    Movie(
-                        i,
-                        i,
-                        i.toDouble(),
-                        "Movie Title $i",
-                        "/989zACwuc4EiBUNA3Ul7bgMoh0O.jpg"
-                        , ""
-                    )
-                )
-            }
-            insertIntoDatabase(list)
-        }
-    }
-
     fun addItem() {
         GlobalScope.launch(Dispatchers.IO) {
             movieDao.insert(
                 Movie(
-                    1,
                     1212,
                     21231.0,
                     "New Item Added",
@@ -144,7 +123,9 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
     fun updateItem(movie: Movie?) {
         GlobalScope.launch(Dispatchers.IO) {
             if (movie != null) {
+                movie.id = 1321
                 movie.title = "Updated Title"
+                movie.popularity = 12456.2
                 movieDao.update(movie)
             }
         }

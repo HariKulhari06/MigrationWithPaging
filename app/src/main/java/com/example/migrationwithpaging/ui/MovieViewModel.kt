@@ -29,10 +29,6 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
 
     val moviesLiveListFromDataBaseAndNetwork = listingByDataBase.pagedList
 
-    fun insertTestMovies() {
-        movieRepository.insertDemoData()
-    }
-
     fun addItem() {
         movieRepository.addItem()
     }

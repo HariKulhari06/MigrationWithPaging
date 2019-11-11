@@ -52,11 +52,14 @@ class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(REPO_COMPA
 
     companion object {
         private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.title == newItem.title
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem == newItem
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem == newItem
+            }
+
         }
     }
 }

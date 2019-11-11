@@ -20,9 +20,9 @@ import kotlinx.android.synthetic.main.activity_with_db.*
 import kotlinx.android.synthetic.main.content_with_db.*
 
 class MovieActivity : AppCompatActivity() {
-    lateinit var viewModel: MovieViewModel
+    private lateinit var viewModel: MovieViewModel
     private var adapter: MovieAdapter? = null
-    lateinit var pagingType: PagingType
+    private lateinit var pagingType: PagingType
 
     private val factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -38,8 +38,13 @@ class MovieActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.options, menu)
-        return true
+        return if (pagingType == PagingType.LIST_ADAPTER) {
+            menuInflater.inflate(R.menu.options, menu)
+            true
+        } else {
+            false
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

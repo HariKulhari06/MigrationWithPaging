@@ -6,11 +6,10 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Movie(
-    @PrimaryKey(autoGenerate = true)
-    val localId: Int,
-    val id: Int,
+
+    @PrimaryKey var id: Int,
     @SerializedName("popularity")
-    val popularity: Double,
+    var popularity: Double,
     @SerializedName("original_title")
     var title: String,
     @SerializedName("poster_path")

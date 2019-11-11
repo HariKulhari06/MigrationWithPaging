@@ -18,13 +18,13 @@ interface MovieDao {
     @Delete
     fun deleteAll(movies: List<Movie>)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     fun update(movie: Movie)
 
     @Query("SELECT * FROM movie ORDER BY popularity DESC")
     fun getMovies(): LiveData<List<Movie>>
 
-    @Query("SELECT * FROM movie ORDER BY localId ASC")
+    @Query("SELECT * FROM movie ORDER BY popularity DESC")
     fun getMoviesDataSource(): DataSource.Factory<Int, Movie>
 
     @Query("SELECT COUNT(*) FROM movie")
