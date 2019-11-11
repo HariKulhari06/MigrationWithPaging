@@ -8,6 +8,17 @@ Sample created to practice **Paging Library**.
 	</a>
 </p>
 
+## How to build
+
+1. Get a [theMovieDb][theMovieDb] key.
+2. TMDB API key has to be set in [build.gradle](app/build.gradle) file.
+```xml
+   
+  <buildConfigField 'String', 'TMDB_API_KEY', '"PASTE YOU TMDB API KEY"'>
+    
+```
+3. Continue with normal development or building process.
+
 ## What Have I learned?
 
 * **Paging Library:** The Paging Library makes it easier for you to load data on demand within your app's RecyclerView.
@@ -42,6 +53,7 @@ Sample created to practice **Paging Library**.
 [12]: https://www.youtube.com/watch?v=BE5bsyGGLf4
 [13]: https://www.youtube.com/watch?v=pErTyQpA390&t=862s
 [14]: https://antonioleiva.com/kotlin-android-developers-book/
+[theMovieDb]: https://www.themoviedb.org/
 
 
 
