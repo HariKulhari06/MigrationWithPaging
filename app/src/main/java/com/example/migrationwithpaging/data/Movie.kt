@@ -12,7 +12,7 @@ data class Movie(
     @SerializedName("popularity")
     val popularity: Double,
     @SerializedName("original_title")
-    val title: String,
+    var title: String,
     @SerializedName("poster_path")
     val posterPath: String,
     @SerializedName("overview")

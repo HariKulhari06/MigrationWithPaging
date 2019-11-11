@@ -37,7 +37,8 @@ class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(REPO_COMPA
         private val overview: TextView = view.findViewById(R.id.overview)
 
         fun bind(movie: Movie?) {
-            Glide.with(posterImageView.context).load(movie?.posterPath?.let { getPoster(it) })
+            Glide.with(posterImageView.context)
+                .load(movie?.posterPath?.let { getPoster(it) })
                 .into(posterImageView)
             title.text = movie?.title
             overview.text = movie?.overview.toString()
@@ -52,7 +53,7 @@ class MovieAdapter : PagedListAdapter<Movie, MovieAdapter.ViewHolder>(REPO_COMPA
     companion object {
         private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                oldItem.localId == newItem.localId
+                oldItem.title == newItem.title
 
             override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
                 oldItem == newItem

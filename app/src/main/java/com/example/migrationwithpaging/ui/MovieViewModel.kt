@@ -33,4 +33,16 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
         movieRepository.insertDemoData()
     }
 
+    fun addItem() {
+        movieRepository.addItem()
+    }
+
+    fun removeItem(movie: Movie?) {
+        movieRepository.removeItem(movie)
+    }
+
+    fun updateItem(movie: Movie?) {
+        movieRepository.updateItem(movie)
+    }
+
 }

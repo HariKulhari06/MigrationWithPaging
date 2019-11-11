@@ -5,4 +5,7 @@
     <string name="title_activity_with_db">Movies</string>
     <string name="list_adapter">List Adapter</string>
     <string name="database_network">Database + Network</string>
+    <string name="remove_item">Remove_item</string>
+    <string name="add_item">Add Item</string>
+    <string name="update_item">Update Item</string>
 </resources>

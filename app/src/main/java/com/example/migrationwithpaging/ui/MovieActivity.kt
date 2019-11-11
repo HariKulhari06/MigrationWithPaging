@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.content_with_db.*
 
 class MovieActivity : AppCompatActivity() {
     lateinit var viewModel: MovieViewModel
-
+    private var adapter: MovieAdapter? = null
     lateinit var pagingType: PagingType
 
     private val factory = object : ViewModelProvider.Factory {
@@ -34,6 +36,30 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.options, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add_item -> {
+                viewModel.addItem()
+                true
+            }
+            R.id.action_remove_item -> {
+                viewModel.removeItem(adapter?.currentList?.get(0))
+                true
+            }
+            R.id.action_update_item -> {
+                viewModel.updateItem(adapter?.currentList?.get(0))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_with_db)
@@ -43,7 +69,7 @@ class MovieActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
 
-        val adapter = MovieAdapter()
+        adapter = MovieAdapter()
         rc.adapter = adapter
 
         when (pagingType) {
@@ -55,16 +81,16 @@ class MovieActivity : AppCompatActivity() {
             }
             PagingType.WITH_DB -> viewModel.moviesLiveListFromDataBase.observe(this, Observer {
                 Log.e("FromDataBase", "" + it.size)
-                adapter.submitList(it)
+                adapter?.submitList(it)
             })
             PagingType.WITH_NETWORK -> viewModel.moviesLiveListFromNetwork.observe(this, Observer {
                 Log.e("FromNetwork", "" + it.size)
-                adapter.submitList(it)
+                adapter?.submitList(it)
             })
             else -> {
                 viewModel.moviesLiveListFromDataBaseAndNetwork.observe(this, Observer {
                     Log.e("DataBaseAndNetwork", "" + it.size)
-                    adapter.submitList(it)
+                    adapter?.submitList(it)
                 })
             }
         }

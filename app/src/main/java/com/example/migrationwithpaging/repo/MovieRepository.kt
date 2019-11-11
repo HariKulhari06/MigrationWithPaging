@@ -117,6 +117,39 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
         }
     }
 
+    fun addItem() {
+        GlobalScope.launch(Dispatchers.IO) {
+            movieDao.insert(
+                Movie(
+                    1,
+                    1212,
+                    21231.0,
+                    "New Item Added",
+                    "cv",
+                    "Item added for testing."
+                )
+            )
+        }
+
+    }
+
+    fun removeItem(movie: Movie?) {
+        GlobalScope.launch(Dispatchers.IO) {
+            if (movie != null) {
+                movieDao.delete(movie)
+            }
+        }
+    }
+
+    fun updateItem(movie: Movie?) {
+        GlobalScope.launch(Dispatchers.IO) {
+            if (movie != null) {
+                movie.title = "Updated Title"
+                movieDao.update(movie)
+            }
+        }
+    }
+
     companion object {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)

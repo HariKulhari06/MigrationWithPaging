@@ -6,10 +6,10 @@ import androidx.room.*
 
 @Dao
 interface MovieDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<Movie>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: Movie)
 
     @Delete
@@ -17,6 +17,9 @@ interface MovieDao {
 
     @Delete
     fun deleteAll(movies: List<Movie>)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(movie: Movie)
 
     @Query("SELECT * FROM movie ORDER BY popularity DESC")
     fun getMovies(): LiveData<List<Movie>>
