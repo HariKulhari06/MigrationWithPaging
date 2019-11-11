@@ -67,3 +67,5 @@ L
 .idea/codeStyles/Project.xml,6/e/6ecd6000a7b6f4a2884412ff19f74193ed089648
 [
 +app/src/main/res/layout/list_item_movie.xml,a/7/a753eb96b1c359702b34f2be33c04f3861069e5a
+J
+.idea/copyright/paging.xml,3/0/3048c99ab2aadcaef7c4b34fdc091963f6bf08ba

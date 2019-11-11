@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 Hari Singh Kulhari
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.example.migrationwithpaging.repo
 
 import androidx.lifecycle.LiveData
@@ -7,7 +23,7 @@ import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.example.migrationwithpaging.data.Movie
 import com.example.migrationwithpaging.data.MovieDao
-import com.example.migrationwithpaging.data.network.ApiService
+import com.example.migrationwithpaging.data.network.*
 import com.example.migrationwithpaging.repo.dbAndNetwork.MovieBoundaryCallBack
 import com.example.migrationwithpaging.repo.withNetwork.byItem.MoviePagedKeyDataSourceFactory
 import kotlinx.coroutines.Dispatchers
@@ -62,32 +78,57 @@ class MovieRepository(private val movieDao: MovieDao, private val apiService: Ap
             handleResponse = this::insertIntoDatabase
         )
 
-        val refreshTrigger = MutableLiveData<Unit>()
-        val refreshState = Transformations.switchMap(refreshTrigger) {
-            refresh()
-        }
-
         val pagedList = movieDao.getMoviesDataSource().toLiveData(
             config,
             boundaryCallback = boundaryCallback
         )
 
+        val refreshTrigger = MutableLiveData<Unit>()
+        val refreshState = Transformations.switchMap(refreshTrigger) {
+            refresh()
+        }
+
+
         return Listing(
             pagedList = pagedList,
             networkState = boundaryCallback.networkState,
             retry = {
-                refresh()
+                retry()
             },
             refresh = {
-                refreshTrigger.value = null
+                refreshTrigger.postValue(Unit)
             },
             refreshState = refreshState
 
         )
     }
 
-    private fun refresh(): MutableLiveData<NetworkState> {
-        return MutableLiveData()
+    private fun retry() = Unit
+
+
+    private fun refresh(): LiveData<NetworkState> {
+        val networkState = MutableLiveData<NetworkState>()
+        networkState.postValue(NetworkState.LOADING)
+        ApiRepository.callApi(apiService.discoverMovieAsync(1),
+            object : ApiCallback<DiscoverMoviesResponse> {
+                override fun onException(error: Throwable) {
+                    networkState.postValue(NetworkState.error(error.message))
+                }
+
+                override fun onError(errorModel: ApiError) {
+                    networkState.postValue(NetworkState.error(errorModel.statusMessage))
+                }
+
+                override fun onSuccess(t: DiscoverMoviesResponse?) {
+                    networkState.postValue(NetworkState.LOADED)
+                    t?.movies?.let {
+                        movieDao.nukeTable()
+                        insertIntoDatabase(t.movies)
+                    }
+                }
+            })
+
+        return networkState
     }
 
 
