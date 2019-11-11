@@ -36,7 +36,6 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return if (pagingType == PagingType.LIST_ADAPTER) {
             menuInflater.inflate(R.menu.options, menu)
