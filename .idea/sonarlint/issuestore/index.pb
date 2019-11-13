@@ -69,3 +69,7 @@ L
 +app/src/main/res/layout/list_item_movie.xml,a/7/a753eb96b1c359702b34f2be33c04f3861069e5a
 J
 .idea/copyright/paging.xml,3/0/3048c99ab2aadcaef7c4b34fdc091963f6bf08ba
+j
+:app/src/main/java/com/example/migrationwithpaging/Event.kt,9/0/90e914deb5c5793c6c0e740ec09b020a191975a7
+r
+Bapp/src/main/java/com/example/migrationwithpaging/MainViewModel.kt,c/e/ce48eb6dc17beb7230d5f617ecb94642a681631f
